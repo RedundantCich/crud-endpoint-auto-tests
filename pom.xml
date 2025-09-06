@@ -10,9 +10,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <serenity.version>4.1.19</serenity.version>
+        <serenity.version>4.0.1</serenity.version>
         <cucumber.version>7.15.0</cucumber.version>
         <junit.version>5.9.3</junit.version>
+        <junit-platform.version>1.13.4</junit-platform.version>
     </properties>
 
     <dependencies>
@@ -20,14 +21,30 @@
             <groupId>net.serenity-bdd</groupId>
             <artifactId>serenity-core</artifactId>
             <version>${serenity.version}</version>
-        </dependency>
+            <scope>test</scope></dependency>
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-junit5</artifactId>
+            <version>${serenity.version}</version>
+            <scope>test</scope></dependency>
 
         <dependency>
             <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-cucumber7</artifactId>
+            <artifactId>serenity-cucumber</artifactId>
             <version>${serenity.version}</version>
+            <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope></dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -50,10 +67,15 @@
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope></dependency>
     </dependencies>
 
     <build>

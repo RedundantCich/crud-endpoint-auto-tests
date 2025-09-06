@@ -1,11 +1,11 @@
 package com.redundantcich.crudauto.config;
 
-import net.serenitybdd.core.environment.ConfiguredEnvironment;
+import net.serenitybdd.model.environment.ConfiguredEnvironment;
 
 public class Config {
 
     public static String getBaseUrl() {
-        return ConfiguredEnvironment.getConfiguration().getProperty("base.url");
+        return ConfiguredEnvironment.getConfiguration().getBaseUrl();
     }
 
     public static String getApiUser() {
