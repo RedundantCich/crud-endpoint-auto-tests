@@ -22,10 +22,12 @@ public class BookService {
         this.booksEndpoint = Config.getBooksEndpoint();
     }
 
+    public Response createBookOnly(Book book) {
+        return spec().body(book).post(baseUrl + booksEndpoint);
+    }
+
     public Book createBookAndReturn(Book book) {
-        Response response = spec()
-                .body(book)
-                .post(baseUrl + booksEndpoint);
+        Response response = createBookOnly(book);
         response.then().statusCode(201);
 
         String generatedId = response.jsonPath().getString("id");
