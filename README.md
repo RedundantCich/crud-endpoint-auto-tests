@@ -1,0 +1,1 @@
+# crud-endpoint-auto-tests
