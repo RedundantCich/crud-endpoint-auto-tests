@@ -27,6 +27,11 @@ public class BookFactory {
         return new Book(null, name, author, publication, category, pages, price);
     }
 
+    public static Book createCustomBook(
+            String name, String author, String publication, String category, int pages, float price) {
+        return new Book(null, name, author, publication, category, pages, price);
+    }
+
     private static int readCounterFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(COUNTER_FILE))) {
             return Integer.parseInt(reader.readLine());
