@@ -22,12 +22,15 @@ public class BookService {
         this.booksEndpoint = Config.getBooksEndpoint();
     }
 
-    public Response createBook(Book book) {
-        String url = baseUrl + booksEndpoint;
-        return spec()
-                .contentType("application/json")
+    public Book createBookAndReturn(Book book) {
+        Response response = spec()
                 .body(book)
-                .post(url);
+                .post(baseUrl + booksEndpoint);
+        response.then().statusCode(201);
+
+        String generatedId = response.jsonPath().getString("id");
+        book.setId(generatedId);
+        return book;
     }
 
     public Response getBook(String bookId) {
@@ -36,16 +39,16 @@ public class BookService {
                 .get(url);
     }
 
-    public Response updateBook(String bookId, Book book) {
-        String url = baseUrl + Config.getBookByIdEndpoint(bookId);
+    public Response updateBook(Book book) {
+        String url = baseUrl + Config.getBookByIdEndpoint(book.getId());
         return spec()
                 .contentType("application/json")
                 .body(book)
                 .put(url);
     }
 
-    public Response deleteBook(String bookId) {
-        String url = baseUrl + Config.getBookByIdEndpoint(bookId);
+    public Response deleteBook(Book book) {
+        String url = baseUrl + Config.getBookByIdEndpoint(book.getId());
         return spec()
                 .delete(url);
     }

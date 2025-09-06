@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Book {
+    private String id; // null initially; created server-side;
     private String name;
     private String author;
     private String publication;
