@@ -2,11 +2,10 @@ package com.redundantcich.crudauto.service;
 
 import com.redundantcich.crudauto.config.Config;
 import com.redundantcich.crudauto.model.Book;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
-
-import java.util.List;
 
 public class BookService {
 
@@ -53,13 +52,14 @@ public class BookService {
                 .delete(url);
     }
 
-    public List<Book> listBooks() {
+    public JsonPath listBooks() {
         return authenticated()
                 .log().all()
                 .get(fullBooksUrl)
                 .then()
                 .log().all()
-                .extract().body().jsonPath().getList("", Book.class);
+                .extract().body().jsonPath();
+                //.getList("", Book.class);
     }
 
     private RequestSpecification authenticated() {

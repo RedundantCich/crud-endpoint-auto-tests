@@ -27,6 +27,16 @@ public class BookFactory {
         return new Book(null, name, author, publication, category, pages, price);
     }
 
+    public static Book updateBookPrice(Book book) {
+        book.setPrice(book.getPrice()+9000);
+        return book;
+    }
+
+    public static Book updateBookPages(Book book) {
+        book.setPages(book.getPages()+9000);
+        return book;
+    }
+
     public static Book createCustomBook(
             String name, String author, String publication, String category, int pages, float price) {
         return new Book(null, name, author, publication, category, pages, price);
