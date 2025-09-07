@@ -13,58 +13,56 @@ public class BookService {
     private final String baseUrl;
     private final String user;
     private final String password;
-    private final String booksEndpoint;
+    private final String fullBooksUrl;
 
     public BookService() {
         this.baseUrl = Config.getBaseUrl();
         this.user = Config.getApiUser();
         this.password = Config.getApiPass();
-        this.booksEndpoint = Config.getBooksEndpoint();
+        String booksEndpoint = Config.getBooksEndpoint();
+        this.fullBooksUrl = baseUrl + booksEndpoint;
     }
 
-    public Response createBookOnly(Book book) {
-        return spec().body(book).post(baseUrl + booksEndpoint);
-    }
-
-    public Book createBookAndReturn(Book book) {
-        Response response = createBookOnly(book);
-        response.then().statusCode(201);
-
-        String generatedId = response.jsonPath().getString("id");
-        book.setId(generatedId);
-        return book;
+    public Response createBook(Book book) {
+        return authenticated()
+                .body(book)
+                .log().all()
+                .post(fullBooksUrl);
     }
 
     public Response getBook(String bookId) {
         String url = baseUrl + Config.getBookByIdEndpoint(bookId);
-        return spec()
+        return authenticated()
+                .log().all()
                 .get(url);
     }
 
     public Response updateBook(Book book) {
         String url = baseUrl + Config.getBookByIdEndpoint(book.getId());
-        return spec()
+        return authenticated()
                 .contentType("application/json")
                 .body(book)
+                .log().all()
                 .put(url);
     }
 
     public Response deleteBook(Book book) {
         String url = baseUrl + Config.getBookByIdEndpoint(book.getId());
-        return spec()
+        return authenticated()
+                .log().all()
                 .delete(url);
     }
 
     public List<Book> listBooks() {
-        String url = baseUrl + booksEndpoint;
-        return spec()
-                .get(url)
+        return authenticated()
+                .log().all()
+                .get(fullBooksUrl)
                 .then()
+                .log().all()
                 .extract().body().jsonPath().getList("", Book.class);
     }
 
-
-    private RequestSpecification spec() {
+    private RequestSpecification authenticated() {
         return SerenityRest.given()
                 .auth().preemptive().basic(user, password);
     }
