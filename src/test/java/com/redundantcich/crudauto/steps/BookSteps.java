@@ -3,9 +3,13 @@ package com.redundantcich.crudauto.steps;
 import com.redundantcich.crudauto.factories.BookFactory;
 import com.redundantcich.crudauto.model.Book;
 import com.redundantcich.crudauto.service.BookService;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.And;
-import net.serenitybdd.rest.SerenityRest;
+
+import static net.serenitybdd.rest.SerenityRest.lastResponse;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class BookSteps {
 
@@ -20,7 +24,7 @@ public class BookSteps {
 
     @And("I store the book id")
     public void iStoreTheBookId() {
-        String id = SerenityRest.lastResponse().jsonPath().getString("id");
+        String id = lastResponse().jsonPath().getString("id");
         createdBook.setId(id);
     }
 
@@ -45,8 +49,9 @@ public class BookSteps {
         bookService.listBooks();
     }
 
-    @When("the response should contain my book details")
+    @Then("the response should contain my book details")
     public void responseContainsAllBooksDetails() {
-
+        Book returnedBook = lastResponse().jsonPath().getObject("", Book.class);
+        assertThat(returnedBook, equalTo(createdBook));
     }
 }
