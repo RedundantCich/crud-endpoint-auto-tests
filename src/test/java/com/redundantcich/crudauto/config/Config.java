@@ -1,6 +1,5 @@
 package com.redundantcich.crudauto.config;
 
-import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.model.environment.ConfiguredEnvironment;
 
 public class Config {
