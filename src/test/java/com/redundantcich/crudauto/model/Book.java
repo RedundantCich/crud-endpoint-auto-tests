@@ -16,5 +16,5 @@ public class Book {
     private String publication;
     private String category;
     private int pages;
-    private float prices;
+    private float price;
 }
