@@ -11,5 +11,30 @@ public class CommonSteps {
     public void theResponseStatusShouldBe(int expectedStatus) {
         lastResponse().then().statusCode(equalTo(expectedStatus));
     }
+
+    @Then("the response doesn't contain an array")
+    public void responseContainsNoArray() {
+        doesResponseContainArray(false);
+    }
+
+    @Then("the response should contain an array")
+    public void responseContainsArray() {
+        doesResponseContainArray(true);
+    }
+
+    private void doesResponseContainArray(boolean isArrayExpected) {
+        String body = lastResponse().getBody().asString().trim();
+        boolean isArrayActual = body.startsWith("[");
+
+        if (isArrayExpected && !isArrayActual) {
+            throw new AssertionError(
+                    "Expected an array but the API didn't return it"
+            );
+        } else if (!isArrayExpected && isArrayActual) {
+            throw new AssertionError(
+                    "Expected a single Book object but the API returned an array:"
+            );
+        }
+    }
 }
 

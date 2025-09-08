@@ -3,13 +3,13 @@ package com.redundantcich.crudauto.steps;
 import com.redundantcich.crudauto.factories.BookFactory;
 import com.redundantcich.crudauto.model.Book;
 import com.redundantcich.crudauto.service.BookService;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.en.And;
+import io.restassured.path.json.JsonPath;
 
 import static net.serenitybdd.rest.SerenityRest.lastResponse;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookSteps {
 
@@ -25,6 +25,7 @@ public class BookSteps {
     @And("I store the book id")
     public void iStoreTheBookId() {
         String id = lastResponse().jsonPath().getString("id");
+        assertThat(id).isNotEmpty();
         createdBook.setId(id);
     }
 
@@ -52,6 +53,34 @@ public class BookSteps {
     @Then("the response should contain my book details")
     public void responseContainsAllBooksDetails() {
         Book returnedBook = lastResponse().jsonPath().getObject("", Book.class);
-        assertThat(returnedBook, equalTo(createdBook));
+        assertThat(returnedBook)
+                .usingRecursiveComparison()
+                .isEqualTo(createdBook);
+    }
+
+    @Then("first book has non-empty fields")
+    public void responseContainsNonEmptyBookInFirstPlace() {
+        JsonPath jsonPath = lastResponse().jsonPath();
+        Book firstBook = jsonPath.getObject("[0]", Book.class);
+        bookFieldsNotEmpty(firstBook);
+    }
+
+    @Then("last book has non-empty fields")
+    public void responseContainsNonEmptyBookInLastPlace() {
+        JsonPath jsonPath = lastResponse().jsonPath();
+        int lastIndex = jsonPath.getList("$").size() - 1;
+        Book lastBook = jsonPath.getObject("[" + lastIndex + "]", Book.class);
+        bookFieldsNotEmpty(lastBook);
+    }
+
+    private void bookFieldsNotEmpty(Book book) {
+        assertThat(book).isNotNull();
+        assertThat(book.getName()).isNotEmpty();
+        assertThat(book.getAuthor()).isNotEmpty();
+        assertThat(book.getPublication()).isNotEmpty();
+        assertThat(book.getCategory()).isNotEmpty();
+        assertThat(book.getPages()).isNotNull();
+        assertThat(book.getPrice()).isNotNull();
     }
 }
+
