@@ -2,7 +2,6 @@ package com.redundantcich.crudauto.service;
 
 import com.redundantcich.crudauto.config.Config;
 import com.redundantcich.crudauto.model.Book;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
@@ -24,6 +23,7 @@ public class BookService {
 
     public Response createBook(Book book) {
         return authenticated()
+                .contentType("application/json")
                 .body(book)
                 .log().all()
                 .post(fullBooksUrl);
@@ -52,18 +52,14 @@ public class BookService {
                 .delete(url);
     }
 
-    public JsonPath listBooks() {
+    public Response listBooks() {
         return authenticated()
                 .log().all()
-                .get(fullBooksUrl)
-                .then()
-                .log().all()
-                .extract().body().jsonPath();
-                //.getList("", Book.class);
+                .get(fullBooksUrl);
     }
 
     private RequestSpecification authenticated() {
         return SerenityRest.given()
-                .auth().preemptive().basic(user, password);
+                .auth().basic(user, password);
     }
 }
