@@ -1,11 +1,18 @@
 package com.redundantcich.crudauto.steps;
 
+import com.redundantcich.crudauto.config.RestAssuredConfigProvider;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 import static net.serenitybdd.rest.SerenityRest.lastResponse;
 import static org.hamcrest.Matchers.*;
 
 public class CommonSteps {
+
+    @Given("I configure API timeouts")
+    public void configureApiTimeouts() {
+        RestAssuredConfigProvider.applyTimeouts();
+    }
 
     @Then("the response status should be {int}")
     public void theResponseStatusShouldBe(int expectedStatus) {

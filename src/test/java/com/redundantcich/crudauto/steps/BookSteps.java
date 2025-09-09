@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.path.json.JsonPath;
+import net.serenitybdd.rest.SerenityRest;
 
 import static net.serenitybdd.rest.SerenityRest.lastResponse;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,11 +16,16 @@ public class BookSteps {
 
     private final BookService bookService = new BookService();
     private Book createdBook;
+    private Book createdBadBook;
 
     @When("I create a new book")
     public void iCreateANewBook() {
         createdBook = BookFactory.createSimpleBook();
-        bookService.createBook(createdBook);
+        iCreateANewCustomBook(createdBook);
+    }
+
+    public void iCreateANewCustomBook(Book book) {
+        bookService.createBook(book);
     }
 
     @And("I store the book id")
@@ -81,6 +87,32 @@ public class BookSteps {
         assertThat(book.getCategory()).isNotEmpty();
         assertThat(book.getPages()).isNotNull();
         assertThat(book.getPrice()).isNotNull();
+    }
+
+    @Then("I send the new book with missing fields to API")
+    public void iSentABookMissingFields() {
+        iCreateANewCustomBook(createdBadBook);
+    }
+
+    @And("the response should contain an error about {string}")
+    public void theResponseShouldContainAnErrorAbout(String missingField) {
+        String body = SerenityRest.lastResponse().asString();
+        assertThat(body).contains(missingField);
+    }
+
+    @When("When I create a new book with name {string}, author {string}, publication {string}, category {string}, price {string}, pages {string}")
+    public void whenICreateANewBookWith(String name, String author, String publication, String category, String price, String pages) {
+        createdBadBook = new Book();
+        createdBadBook.setName(name);
+        createdBadBook.setAuthor(author);
+        createdBadBook.setPublication(publication);
+        createdBadBook.setCategory(category);
+        if (price != null && !price.isBlank()) {
+            createdBadBook.setPrice(Float.parseFloat(price));
+        }
+        if (pages != null && !pages.isBlank()) {
+            createdBadBook.setPages(Integer.parseInt(pages));
+        }
     }
 }
 
