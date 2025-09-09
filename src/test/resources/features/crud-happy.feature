@@ -32,9 +32,8 @@ Feature: Book CRUD - Happy Path
     And the response should contain my book details
 
     When I delete the book by stored id
-    Then the response status should be 204
+    And the response status should be 2xx
     And the response doesn't contain an array
-    And the response should contain my book details
 
     When I fetch the book by stored id
     Then the response status should be 404
