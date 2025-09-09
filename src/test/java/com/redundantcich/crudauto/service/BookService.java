@@ -25,14 +25,12 @@ public class BookService {
         return authenticated()
                 .contentType("application/json")
                 .body(book)
-                .log().all()
                 .post(fullBooksUrl);
     }
 
     public Response getBook(String bookId) {
         String url = baseUrl + Config.getBookByIdEndpoint(bookId);
         return authenticated()
-                .log().all()
                 .get(url);
     }
 
@@ -41,20 +39,17 @@ public class BookService {
         return authenticated()
                 .contentType("application/json")
                 .body(book)
-                .log().all()
                 .put(url);
     }
 
     public Response deleteBook(Book book) {
         String url = baseUrl + Config.getBookByIdEndpoint(book.getId());
         return authenticated()
-                .log().all()
                 .delete(url);
     }
 
     public Response listBooks() {
         return authenticated()
-                .log().all()
                 .get(fullBooksUrl);
     }
 
