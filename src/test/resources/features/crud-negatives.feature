@@ -29,3 +29,15 @@ Feature: Negative cases for Book management
   Scenario: Create a book with text in pages fields
     When I try to create a new book with invalid pages "xyz!"
     Then the response status should be 400
+
+  Scenario: Fetching a non-existing book should return 404
+    When I try to fetch a book with id "non-existing-id"
+    Then the response status should be 404
+
+  Scenario: Deleting a non-existing book should return 404
+    When I try to delete a book with id "non-existiting-id"
+    Then the response status should be 404
+
+  Scenario: Creating a book without title should return 400
+    When I try to create a book without a title
+    Then the response status should be 400

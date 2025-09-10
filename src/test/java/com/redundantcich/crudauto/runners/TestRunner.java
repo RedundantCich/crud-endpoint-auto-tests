@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "com.redundantcich.crudauto.steps",
         plugin = {"pretty"},
-        tags = "@happy"
+        tags = "@negative"
 )
 public class TestRunner {
 }
