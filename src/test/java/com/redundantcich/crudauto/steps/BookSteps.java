@@ -100,8 +100,8 @@ public class BookSteps {
         assertThat(body).contains(missingField);
     }
 
-    @When("When I create a new book with name {string}, author {string}, publication {string}, category {string}, price {string}, pages {string}")
-    public void whenICreateANewBookWith(String name, String author, String publication, String category, String price, String pages) {
+    @When("I create a new book with name {string}, author {string}, publication {string}, category {string}, price {string}, pages {string}")
+    public void iCreateANewBookWith(String name, String author, String publication, String category, String price, String pages) {
         createdBadBook = new Book();
         createdBadBook.setName(name);
         createdBadBook.setAuthor(author);
