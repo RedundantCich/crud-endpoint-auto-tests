@@ -9,6 +9,8 @@ import io.cucumber.java.en.When;
 import io.restassured.path.json.JsonPath;
 import net.serenitybdd.rest.SerenityRest;
 
+import java.util.Map;
+
 import static net.serenitybdd.rest.SerenityRest.lastResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,11 +18,11 @@ public class BookSteps {
 
     private final BookService bookService = new BookService();
     private Book createdBook;
-    private Book createdBadBook;
+    private Map<String, Object> invalidBook;
 
     @When("I create a new book")
     public void iCreateANewBook() {
-        createdBook = BookFactory.createSimpleBook();
+        createdBook = BookFactory.createRandomBook();
         iCreateANewCustomBook(createdBook);
     }
 
@@ -89,30 +91,29 @@ public class BookSteps {
         assertThat(book.getPrice()).isNotNull();
     }
 
-    @Then("I send the new book with missing fields to API")
-    public void iSentABookMissingFields() {
-        iCreateANewCustomBook(createdBadBook);
-    }
-
     @And("the response should contain an error about {string}")
     public void theResponseShouldContainAnErrorAbout(String missingField) {
         String body = SerenityRest.lastResponse().asString();
         assertThat(body).contains(missingField);
     }
 
-    @When("I create a new book with name {string}, author {string}, publication {string}, category {string}, price {string}, pages {string}")
-    public void iCreateANewBookWith(String name, String author, String publication, String category, String price, String pages) {
-        createdBadBook = new Book();
-        createdBadBook.setName(name);
-        createdBadBook.setAuthor(author);
-        createdBadBook.setPublication(publication);
-        createdBadBook.setCategory(category);
-        if (price != null && !price.isBlank()) {
-            createdBadBook.setPrice(Float.parseFloat(price));
-        }
-        if (pages != null && !pages.isBlank()) {
-            createdBadBook.setPages(Integer.parseInt(pages));
-        }
+    @When("I try to create a new book with name {string}, author {string}, publication {string}, category {string}, pages {string}, price {string}")
+    public void iTryToCreateANewBookWith(String name, String author, String publication, String category, String pages, String price) {
+        Book createdBookWithMissingFields = BookFactory.createCustomBookFromStep(
+                name, author, publication, category, price, pages);
+        iCreateANewCustomBook(createdBookWithMissingFields);
+    }
+
+    @When("I try to create a new book with invalid price {string}")
+    public void iCreateANewInvalidFloatBookWith(String price) {
+        invalidBook = BookFactory.createCustomInvalidPriceBookFromStep(price);
+        bookService.createInvalidBook(invalidBook);
+    }
+
+    @When("I try to create a new book with invalid pages {string}")
+    public void iCreateANewInvalidIntBookWith(String pages) {
+        invalidBook = BookFactory.createCustomInvalidPagesBookFromStep(pages);
+        bookService.createInvalidBook(invalidBook);
     }
 }
 

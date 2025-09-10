@@ -9,30 +9,23 @@ Feature: Negative cases for Book management
     And I configure API timeouts
 
   Scenario Outline: Create a book with any of the fields missing
-    When I create a new book with name "<name>", author "<author>", publication "<publication>", category "<category>", price "<price>", pages "<pages>"
-    Then I send the new book with missing fields to API
+    When I try to create a new book with name "<name>", author "<author>", publication "<publication>", category "<category>", pages "<pages>", price "<price>"
     Then the response status should be 400
     And the response should contain an error about "<missingField>"
 
     Examples:
       | name        | author     | publication | category | price | pages | missingField |
-      |             | John Smith | Penguin     | Fiction  | 9.99  | 200   | name         |
-      | Fail BookA  |            | Penguin     | Fiction  | 9.99  | 200   | author       |
-      | Fail BookPu | John Smith |             | Fiction  | 9.99  | 200   | publication  |
-      | Fail BookC  | John Smith | Penguin     |          | 9.99  | 200   | category     |
-      | Fail BookPr | John Smith | Penguin     | Fiction  |       | 200   | price        |
-      | Fail BookPa | John Smith | Penguin     | Fiction  | 9.99  |       | pages        |
+      |             | John Smith | Penguin     | Fiction  | 9.99f | 200   | name         |
+      | Fail BookA  |            | Penguin     | Fiction  | 9.99f | 200   | author       |
+      | Fail BookPu | John Smith |             | Fiction  | 9.99f | 200   | publication  |
+      | Fail BookC  | John Smith | Penguin     |          | 9.99f | 200   | category     |
+      | Fail BookPr | John Smith | Penguin     | Fiction  | 0.00f | 200   | price        |
+      | Fail BookPa | John Smith | Penguin     | Fiction  | 9.99f | 0     | pages        |
 
-  Scenario Outline: Create a book with text in price and pages fields
-    When I create a new book with name "<name>", author "<author>", publication "<publication>", category "<category>", price "<price>", pages "<pages>"
-    Then I send the new book with missing fields to API
+  Scenario: Create a book with text in price fields
+    When I try to create a new book with invalid price "xyz!"
     Then the response status should be 400
 
-    Examples:
-      | name            | author          | publication | category | price | pages |
-      | Fail Book Int   | Edgar Allan Poe | Albatross   | Fiction  | 9.99  | xyz   |
-      | Fail Book Float | Edgar Allan Poe | Albatross   | Fiction  | xyz   | 200   |
-      | Fail Book Int   | Edgar Allan Poe | Albatross   | Fiction  | 9.99  | @$!@  |
-      | Fail Book Float | Edgar Allan Poe | Albatross   | Fiction  | @$!@  | 200   |
-      | Fail Book Int   | Edgar Allan Poe | Albatross   | Fiction  | 9.99  | 200.1 |
-      | Fail Book Float | Edgar Allan Poe | Albatross   | Fiction  | 9     | 200   |
+  Scenario: Create a book with text in pages fields
+    When I try to create a new book with invalid pages "xyz!"
+    Then the response status should be 400
