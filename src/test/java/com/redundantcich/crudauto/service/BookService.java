@@ -8,15 +8,17 @@ import net.serenitybdd.rest.SerenityRest;
 
 public class BookService {
 
-    private final String baseUrl;
     private final String user;
     private final String password;
+
+    private final String baseUrl;
     private final String fullBooksUrl;
 
     public BookService() {
-        this.baseUrl = Config.getBaseUrl();
         this.user = Config.getApiUser();
         this.password = Config.getApiPass();
+
+        this.baseUrl = Config.getBaseUrl();
         String booksEndpoint = Config.getBooksEndpoint();
         this.fullBooksUrl = baseUrl + booksEndpoint;
     }
