@@ -2,7 +2,6 @@ package com.redundantcich.crudauto.service;
 
 import com.redundantcich.crudauto.config.Config;
 import com.redundantcich.crudauto.model.Book;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
 
@@ -23,35 +22,35 @@ public class BookService {
         this.fullBooksUrl = baseUrl + booksEndpoint;
     }
 
-    public Response createBook(Book book) {
-        return authenticated()
+    public void createBook(Book book) {
+        authenticated()
                 .contentType("application/json")
                 .body(book)
                 .post(fullBooksUrl);
     }
 
-    public Response getBook(String bookId) {
-        String url = baseUrl + Config.getBookByIdEndpoint(bookId);
-        return authenticated()
-                .get(url);
+    public void getBook(String bookId) {
+        String endpointWithId = baseUrl + Config.getBookByIdEndpoint(bookId);
+        authenticated()
+                .get(endpointWithId);
     }
 
-    public Response updateBook(Book book) {
-        String url = baseUrl + Config.getBookByIdEndpoint(book.getId());
-        return authenticated()
+    public void updateBook(Book book) {
+        String endpointWithId = baseUrl + Config.getBookByIdEndpoint(book.getId());
+        authenticated()
                 .contentType("application/json")
                 .body(book)
-                .put(url);
+                .put(endpointWithId);
     }
 
-    public Response deleteBook(Book book) {
-        String url = baseUrl + Config.getBookByIdEndpoint(book.getId());
-        return authenticated()
-                .delete(url);
+    public void deleteBook(Book book) {
+        String endpointWithId = baseUrl + Config.getBookByIdEndpoint(book.getId());
+        authenticated()
+                .delete(endpointWithId);
     }
 
-    public Response listBooks() {
-        return authenticated()
+    public void listBooks() {
+        authenticated()
                 .get(fullBooksUrl);
     }
 
