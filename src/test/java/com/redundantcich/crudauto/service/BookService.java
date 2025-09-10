@@ -5,6 +5,8 @@ import com.redundantcich.crudauto.model.Book;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
 
+import java.util.Map;
+
 public class BookService {
 
     private final String user;
@@ -26,6 +28,13 @@ public class BookService {
         authenticated()
                 .contentType("application/json")
                 .body(book)
+                .post(fullBooksUrl);
+    }
+
+    public void createInvalidBook(Map<String, Object> invalidBook) {
+        authenticated()
+                .contentType("application/json")
+                .body(invalidBook)
                 .post(fullBooksUrl);
     }
 
