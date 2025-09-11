@@ -6,7 +6,6 @@ Feature: Book CRUD - Happy Path
 
   Background:
     Given I am an authenticated API user
-    And I configure API timeouts
 
   Scenario: List all the existing books
     When I fetch all the books

@@ -6,7 +6,6 @@ Feature: Negative cases for Book management
 
   Background:
     Given I am an authenticated API user
-    And I configure API timeouts
 
   Scenario Outline: Create a book with any of the fields missing
     When I create a new book with name "<name>", author "<author>", publication "<publication>", category "<category>", pages "<pages>", price "<price>"

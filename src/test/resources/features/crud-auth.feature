@@ -6,7 +6,6 @@ Feature: Negative cases for Book management - authorization
 
   Background:
     Given I don't have valid authentication credentials
-    And I configure API timeouts
 
   Scenario: Handle unauthorized access to getting the books
     When I fetch all the books
