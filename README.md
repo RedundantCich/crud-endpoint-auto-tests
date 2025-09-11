@@ -20,7 +20,7 @@ Written in:
 `maven clean verify`
 
 3/ Tests are stored in the report folder with a timestamp
-configured in the `serenity.conf` file under `serenity.outputDirectory`
+configured in the `pom.xml` file under `properties.serenity.outputDirectory`
 
 4/ After a couple runs you can aggregate the results with:
 `mvn serenity:aggregate -Dserenity.outputDirectory=reports/serenity`
