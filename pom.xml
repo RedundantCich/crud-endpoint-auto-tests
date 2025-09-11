@@ -13,6 +13,8 @@
         <serenity.version>4.2.34</serenity.version>
         <cucumber.version>7.15.0</cucumber.version>
         <junit.version>5.9.3</junit.version>
+        <maven.build.timestamp.format>yyyyMMdd-HHmmss</maven.build.timestamp.format>
+        <serenity.outputDirectory>reports/serenity/${maven.build.timestamp}</serenity.outputDirectory>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +95,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M7</version>
                 <configuration>
+                    <systemPropertyVariables>
+                        <serenity.outputDirectory>${serenity.outputDirectory}</serenity.outputDirectory>
+                    </systemPropertyVariables>
                     <includes>
                         <include>**/TestRunner.java</include>
                     </includes>
@@ -119,6 +124,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <outputDirectory>${serenity.outputDirectory}</outputDirectory>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
