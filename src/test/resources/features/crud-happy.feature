@@ -9,7 +9,7 @@ Feature: Book CRUD - Happy Path
     And I configure API timeouts
 
   Scenario: List all the existing books
-    When I list all books
+    When I fetch all the books
     Then the response status should be 200
     And the response should contain an array
     And first book has non-empty fields
@@ -38,3 +38,15 @@ Feature: Book CRUD - Happy Path
 
     When I fetch the book by stored id
     Then the response status should be 404
+
+  Scenario: Create and then fully update a book
+    When I create a new book
+    Then the response status should be 200
+    And I store the book id
+    And the response doesn't contain an array
+    And the response should contain my book details
+
+    When I update an existing book with completely new book details
+    Then the response status should be 200
+    And the response doesn't contain an array
+    And the response should contain my book details
