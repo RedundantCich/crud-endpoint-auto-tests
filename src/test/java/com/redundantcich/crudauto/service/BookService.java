@@ -3,6 +3,7 @@ package com.redundantcich.crudauto.service;
 import com.redundantcich.crudauto.config.Config;
 import com.redundantcich.crudauto.model.Book;
 import io.restassured.specification.RequestSpecification;
+import net.serenitybdd.core.Serenity;
 import net.serenitybdd.rest.SerenityRest;
 
 import java.util.Map;
@@ -28,6 +29,13 @@ public class BookService {
         authenticated()
                 .contentType("application/json")
                 .body(book)
+                .post(fullBooksUrl);
+    }
+
+    public void createInvalidBook(String malformedBook) {
+        authenticated()
+                .contentType("application/json")
+                .body(malformedBook)
                 .post(fullBooksUrl);
     }
 
@@ -58,13 +66,24 @@ public class BookService {
                 .delete(endpointWithId);
     }
 
-    public void listBooks() {
+    public void deleteBook(String id) {
+        String endpointWithId = baseUrl + Config.getBookByIdEndpoint(id);
+        authenticated()
+                .delete(endpointWithId);
+    }
+
+    public void getAllBooks() {
         authenticated()
                 .get(fullBooksUrl);
     }
 
     private RequestSpecification authenticated() {
-        return SerenityRest.given()
-                .auth().basic(user, password);
+        boolean isAuthenticated = Serenity.sessionVariableCalled("auth");
+        if (isAuthenticated) {
+            return SerenityRest.given()
+                    .auth().basic(user, password);
+        } else {
+            return SerenityRest.given();
+        }
     }
 }
