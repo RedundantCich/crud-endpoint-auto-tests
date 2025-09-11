@@ -23,5 +23,5 @@ Written in:
 configured in the `pom.xml` file under `properties.serenity.outputDirectory`
 
 4/ After a couple runs you can aggregate the results with:
-`mvn serenity:aggregate -Dserenity.outputDirectory=reports/serenity`
-where `reports/serenity` is my currently configured output folder.
+`mvn serenity:aggregate -Dserenity.outputDirectory=reports/serenity/{timestamp}`
+where `reports/serenity/{timestamp}` is my currently configured output folder.
