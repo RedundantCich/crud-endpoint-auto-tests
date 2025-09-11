@@ -29,11 +29,16 @@ public class BookFactory {
         return new Book(null, name, author, publication, category, pages, price);
     }
 
-    public static Book createCustomBook(
-            String name, String author, String publication, String category, int pages, float price) {
+    public static Book createTooLongBook() {
+        String name = loremIpsumGenerator(21);
+        String author = loremIpsumGenerator(20);
+        String publication = loremIpsumGenerator(19);
+        String category = loremIpsumGenerator(18);
+        int pages = 314135135;
+        float price = 134134134134.0000f;
         return new Book(null, name, author, publication, category, pages, price);
     }
-
+    
     public static Book createCustomBookFromStep(
             String name, String author, String publication, String category, String price, String pages) {
         return new Book(null, name, author, publication, category, Integer.parseInt(pages), Float.parseFloat(price));
@@ -61,6 +66,11 @@ public class BookFactory {
         invalidBook.put("price", price);
         invalidBook.put("pages", 200);
         return invalidBook;
+    }
+
+    public static String loremIpsumGenerator(int repeatCount) {
+        String lorem = "Lorem ipsum dolor sit amet. ";
+        return lorem.repeat(repeatCount);
     }
 
     private static int readCounterFromFile() {
