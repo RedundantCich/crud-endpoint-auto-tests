@@ -36,9 +36,15 @@ public class BookSteps {
         bookService.createBook(book);
     }
 
-    @When("I create a new book with extremely long values")
-    public void createTooLongBook() {
-        Book longBook = BookFactory.createTooLongBook();
+    @When("I create a new book with extremely long text values")
+    public void createTooLongTextBook() {
+        Book longBook = BookFactory.createTooLongTextFieldsBook();
+        bookService.createBook(longBook);
+    }
+
+    @When("I create a new book with extremely long number values")
+    public void createTooLongNumberBook() {
+        Book longBook = BookFactory.createTooLongNumberFieldsBook();
         bookService.createBook(longBook);
     }
 
@@ -66,6 +72,11 @@ public class BookSteps {
     public void createBookWithInvalidPages(String pages) {
         invalidBook = BookFactory.createCustomInvalidPagesBookFromStep(pages);
         bookService.createInvalidBook(invalidBook);
+    }
+
+    @When("I create a book in the following format:")
+    public void createBookInFormat(String formattedBook) {
+        bookService.createInvalidBook(formattedBook);
     }
 
     // --- Book Fetching Steps ---
@@ -108,6 +119,14 @@ public class BookSteps {
         Book newBook = BookFactory.createRandomBook();
         newBook.setId(id);
         bookService.updateBook(newBook);
+    }
+
+    @When("I update an existing book with completely new book details")
+    public void updateBookWithNewDetails() {
+        Book newBook = BookFactory.createRandomBook();
+        newBook.setId(createdBook.getId());
+        createdBook = newBook;
+        bookService.updateBook(createdBook);
     }
 
     // --- Validation Steps ---
@@ -165,18 +184,5 @@ public class BookSteps {
         assertThat(id).isNotEmpty();
         createdBook.setId(id);
         Serenity.setSessionVariable("createdBookId").to(id);
-    }
-
-    @When("I update an existing book with completely new book details")
-    public void updateBookWithNewDetails() {
-        Book newBook = BookFactory.createRandomBook();
-        newBook.setId(createdBook.getId());
-        createdBook = newBook;
-        bookService.updateBook(createdBook);
-    }
-
-    @When("I send a book in the following format:")
-    public void sendBookInFormat(String formattedBook) {
-        bookService.createInvalidBook(formattedBook);
     }
 }

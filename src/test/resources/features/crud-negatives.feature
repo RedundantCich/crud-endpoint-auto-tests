@@ -1,5 +1,5 @@
 @crud @negative
-Feature: Negative cases for Book management
+Feature: Negative cases for Book management - Request Body
   As an API client
   I want proper error responses
   So that invalid requests do not corrupt the system
@@ -57,15 +57,19 @@ Feature: Negative cases for Book management
     And the response should contain an error about "id"
 
   Scenario: Handle malformed JSON in request body
-    When I send a book in the following format:
+    When I create a book in the following format:
       """
       {"name": "Test", "author": "Test", invalid json}
       """
     Then the response status should be 400
     And the response should contain an error about "Invalid JSON"
 
-  Scenario: Handle request body size limits
-    Given I create a new book with extremely long values
-    When I create a new book
+  Scenario: Handle request body size limits - text
+    When I create a new book with extremely long text values
+    Then the response status should be 413
+    And the response should contain an error about "Request entity too large"
+
+  Scenario: Handle request body size limits - numbers
+    When I create a new book with extremely long number values
     Then the response status should be 413
     And the response should contain an error about "Request entity too large"

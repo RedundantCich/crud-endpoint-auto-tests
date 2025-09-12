@@ -29,16 +29,25 @@ public class BookFactory {
         return new Book(null, name, author, publication, category, pages, price);
     }
 
-    public static Book createTooLongBook() {
+    public static Book createTooLongTextFieldsBook() {
         String name = loremIpsumGenerator(21);
         String author = loremIpsumGenerator(20);
         String publication = loremIpsumGenerator(19);
         String category = loremIpsumGenerator(18);
-        int pages = 314135135;
-        float price = 134134134134.0000f;
+        int pages = 120;
+        float price = 9.99f;
         return new Book(null, name, author, publication, category, pages, price);
     }
-    
+
+    public static Book createTooLongNumberFieldsBook() {
+        int pages = 314135135;
+        float price = 134134134134.0000f;
+        Book numberyBook = createRandomBook();
+        numberyBook.setPrice(price);
+        numberyBook.setPages(pages);
+        return numberyBook;
+    }
+
     public static Book createCustomBookFromStep(
             String name, String author, String publication, String category, String price, String pages) {
         return new Book(null, name, author, publication, category, Integer.parseInt(pages), Float.parseFloat(price));
